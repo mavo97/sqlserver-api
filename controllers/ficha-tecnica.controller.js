@@ -42,6 +42,11 @@ async function saveDataSheet(req, res) {
   const proyectoEjecutivo = req.body.proyectoEjecutivo;
   const registroSHCP = req.body.registroSHCP;
   const tpda = req.body.tpda;
+  const nombreObra = req.body.nombreObra;
+  const nombreTramoLicitacion = req.body.nombreTramoLicitacion;
+  const latitud = req.body.latitud;
+  const longitud = req.body.longitud;
+  const nombreEstado = req.body.nombreEstado;
   const ejerciciosFiscales = req.body.ejerciciosFiscales;
 
   // Generate id
@@ -86,15 +91,20 @@ async function saveDataSheet(req, res) {
         .input("proyectoEjecutivo", sql.VarChar, proyectoEjecutivo)
         .input("registroSHCP", sql.Float, registroSHCP)
         .input("tpda", sql.Float, tpda)
+        .input("nombreObra", sql.VarChar, nombreObra)
+        .input("nombreTramoLicitacion", sql.VarChar, nombreTramoLicitacion)
+        .input("latitud", sql.VarChar, latitud)
+        .input("longitud", sql.VarChar, longitud)
+        .input("nombreEstado", sql.VarChar, nombreEstado)
         .query(`INSERT INTO dbo.ficha_tecnica (uid, avanceFinanciero, avanceFinancieroGlobal, avanceFisico, avanceFisicoGlobal,
                 beneficios, caracteristicas, cus, esquemaFinanciamiento, estado, estatusSHCP, fechaActualizacion, fechaCreacion, incluyeImagenes,
                 inversionTotal, keyCatCarpeta, keyCatCorredor, keyCatOrigenRecursos, keyCatSeccion, keyCatTipoPrioridad, keyLevantamientoObra,
                 keyUsuario, liberacionDerechoVia, longitudTotal, mia, observaciones, periodoEjecucion, problematica, proximasAcciones, proyectoEjecutivo,
-                registroSHCP, tpda) VALUES (@uid, @avanceFinanciero, @avanceFinancieroGlobal, @avanceFisico, @avanceFisicoGlobal,
+                registroSHCP, tpda, nombreObra, nombreTramoLicitacion, latitud, longitud, nombreEstado) VALUES (@uid, @avanceFinanciero, @avanceFinancieroGlobal, @avanceFisico, @avanceFisicoGlobal,
                     @beneficios, @caracteristicas, @cus, @esquemaFinanciamiento, @estado, @estatusSHCP, @fechaActualizacion, @fechaCreacion, @incluyeImagenes,
                     @inversionTotal, @keyCatCarpeta, @keyCatCorredor, @keyCatOrigenRecursos, @keyCatSeccion, @keyCatTipoPrioridad, @keyLevantamientoObra,
                     @keyUsuario, @liberacionDerechoVia, @longitudTotal, @mia, @observaciones, @periodoEjecucion, @problematica, @proximasAcciones, @proyectoEjecutivo,
-                    @registroSHCP, @tpda);`);
+                    @registroSHCP, @tpda, @nombreObra, @nombreTramoLicitacion, @latitud, @longitud, @nombreEstado);`);
 
       for (const item of ejerciciosFiscales) {
         const id2 = uuid();
@@ -146,15 +156,20 @@ async function saveDataSheet(req, res) {
         .input("proyectoEjecutivo", sql.VarChar, proyectoEjecutivo)
         .input("registroSHCP", sql.Float, registroSHCP)
         .input("tpda", sql.Float, tpda)
+        .input("nombreObra", sql.VarChar, nombreObra)
+        .input("nombreTramoLicitacion", sql.VarChar, nombreTramoLicitacion)
+        .input("latitud", sql.VarChar, latitud)
+        .input("longitud", sql.VarChar, longitud)
+        .input("nombreEstado", sql.VarChar, nombreEstado)
         .query(`INSERT INTO dbo.ficha_tecnica (uid, avanceFinanciero, avanceFinancieroGlobal, avanceFisico, avanceFisicoGlobal,
                 beneficios, caracteristicas, cus, esquemaFinanciamiento, estado, estatusSHCP, fechaActualizacion, fechaCreacion, incluyeImagenes,
                 inversionTotal, keyCatCarpeta, keyCatCorredor, keyCatOrigenRecursos, keyCatSeccion, keyCatTipoPrioridad, keyLevantamientoObra,
                 keyUsuario, liberacionDerechoVia, longitudTotal, mia, observaciones, periodoEjecucion, problematica, proximasAcciones, proyectoEjecutivo,
-                registroSHCP, tpda) VALUES (@uid, @avanceFinanciero, @avanceFinancieroGlobal, @avanceFisico, @avanceFisicoGlobal,
+                registroSHCP, tpda, nombreObra, nombreTramoLicitacion, latitud, longitud, nombreEstado) VALUES (@uid, @avanceFinanciero, @avanceFinancieroGlobal, @avanceFisico, @avanceFisicoGlobal,
                     @beneficios, @caracteristicas, @cus, @esquemaFinanciamiento, @estado, @estatusSHCP, @fechaActualizacion, @fechaCreacion, @incluyeImagenes,
                     @inversionTotal, @keyCatCarpeta, @keyCatCorredor, @keyCatOrigenRecursos, @keyCatSeccion, @keyCatTipoPrioridad, @keyLevantamientoObra,
                     @keyUsuario, @liberacionDerechoVia, @longitudTotal, @mia, @observaciones, @periodoEjecucion, @problematica, @proximasAcciones, @proyectoEjecutivo,
-                    @registroSHCP, @tpda);`);
+                    @registroSHCP, @tpda, @nombreObra, @nombreTramoLicitacion, @latitud, @longitud, @nombreEstado);`);
     } else {
       res.status(503).send({ ficha: "No se pudo crear la ficha!" });
       // console.log('hola');

@@ -4,7 +4,7 @@ create table dbo.ficha_tecnica (uid UNIQUEIDENTIFIER PRIMARY KEY, avanceFinancie
 	fechaActualizacion date, fechaCreacion date, incluyeImagenes bit, inversionTotal float, keyCatCarpeta text, keyCatCorredor text,
 	keyCatOrigenRecursos text, keyCatSeccion text, keyCatTipoPrioridad text, keyLevantamientoObra text, keyUsuario text, liberacionDerechoVia text,
 	longitudTotal float, mia text, observaciones text, periodoEjecucion text, problematica text, proximasAcciones text, proyectoEjecutivo text,
-	registroSHCP float, tpda float); 
+	registroSHCP float, tpda float, nombreObra text, nombreTramoLicitacion text, latitud float, longitud float); 
 
 /* Tabla ejercicios fiscales */
 create table dbo.ejercicios_fiscales (uid UNIQUEIDENTIFIER PRIMARY KEY, asignacion float, esquemaFiscal float, letrasAsignacion text,
@@ -24,3 +24,14 @@ INSERT INTO dbo.ficha_tecnica (uid, avanceFinanciero, avanceFinancieroGlobal, av
 '18-06-12 10:34:09 PM'
 drop table dbo.ejercicios_fiscales;
 drop table dbo.ficha_tecnica;
+
+ALTER TABLE dbo.ficha_tecnica
+ADD nombreEstado text;
+
+/*
+nombreObra
+nombreTramoLicitacion
+latitud
+longitud
+nombreEstado
+*/
