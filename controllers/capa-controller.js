@@ -3,7 +3,6 @@
 // Database component
 const sql = require("mssql"); // Drivers
 const config = require("../config");
-const uuid = require("uuid-random");
 const format = require("../functions/functions");
 
 async function saveCapa(req, res) {

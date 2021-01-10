@@ -5,6 +5,7 @@ const api = express.Router();
 const markerCtrl = require("../controllers/marker");
 const datasheetCtrl = require("../controllers/ficha-tecnica.controller");
 const capasCtrl = require("../controllers/capa-controller");
+const segmentosCtrl = require("../controllers/segmento-controller");
 
 // muestra marcadores
 api.get("/markers", markerCtrl.getMarkers);
@@ -22,7 +23,9 @@ api.get("/taxdata", datasheetCtrl.getTaxData);
 api.get("/taxdata/:dataId", datasheetCtrl.getTaxDataById);
 // Actualizar ficha tecnica
 api.post("/update-datasheet", datasheetCtrl.updateDataSheet);
-//Crear capa
+// Crear capa
 api.post("/crear-capa", capasCtrl.saveCapa);
+// Crear segmento
+api.post("/crear-segmento", segmentosCtrl.saveSegmento);
 
 module.exports = api;
