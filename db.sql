@@ -1,19 +1,26 @@
+/* tabla levantamiento obra */
+CREATE TABLE dbo.levantamiento_obra ( key varchar(25) PRIMARY KEY, nombreTramoLicitacion text, nombreObra text, longitud float,
+latitud float, keyUsuarioLevantamiento text, keyUsuarioAprobacion text, keyCatTipoObra varchar, keyCatTipoLevantamiento varchar,
+keyCatEstatusValidacionObra varchar, keyCatEstado varchar, keyCatDireccionAdjunta varchar, fechaRegistro date, fechaCreacion date,
+fechaAprobacion date, fechaActualizacion date, keyCatMunicipio varchar);
+
 /* Tabla ficha tecnica */
-create table dbo.ficha_tecnica (uid UNIQUEIDENTIFIER, avanceFinanciero float, avanceFinancieroGlobal float, avanceFisico float,
+create table dbo.ficha_tecnica (uid UNIQUEIDENTIFIER PRIMARY KEY, avanceFinanciero float, avanceFinancieroGlobal float, avanceFisico float,
 	avanceFisicoGlobal float, beneficios text, caracteristicas text, cus text, esquemaFinanciamiento text, estado text, estatusSHCP text,
 	fechaActualizacion date, fechaCreacion date, incluyeImagenes bit, inversionTotal float, keyCatCarpeta text, keyCatCorredor text,
-	keyCatOrigenRecursos text, keyCatSeccion text, keyCatTipoPrioridad text, keyLevantamientoObra varchar(25) PRIMARY KEY, keyUsuario text, liberacionDerechoVia text,
+	keyCatOrigenRecursos text, keyCatSeccion text, keyCatTipoPrioridad text, keyLevantamientoObra varchar(25), keyUsuario text, liberacionDerechoVia text,
 	longitudTotal float, mia text, observaciones text, periodoEjecucion text, problematica text, proximasAcciones text, proyectoEjecutivo text,
-	registroSHCP float, tpda float, nombreObra text, nombreTramoLicitacion text, latitud float, longitud float, nombreEstado text); 
+	registroSHCP float, tpda float, nombreObra text, nombreTramoLicitacion text, latitud float, longitud float, nombreEstado text,
+  FOREIGN KEY (keyLevantamientoObra) REFERENCES dbo.levantamiento_obra(keylev)); 
 
 /* Tabla ejercicios fiscales */
 create table dbo.ejercicios_fiscales (uid UNIQUEIDENTIFIER PRIMARY KEY, asignacion float, esquemaFiscal float, letrasAsignacion text,
-    letrasEsquemaFiscal text, letrasMeta text, meta float, keyLevantamientoObra varchar(25),
-    FOREIGN KEY (keyLevantamientoObra) REFERENCES dbo.ficha_tecnica(keyLevantamientoObra));
+    letrasEsquemaFiscal text, letrasMeta text, meta float, fichaTecnicaId UNIQUEIDENTIFIER,
+    FOREIGN KEY (fichaTecnicaId) REFERENCES dbo.ficha_tecnica(uid));
 
 /* Tabla capas */
 CREATE TABLE dbo.capas (keyCapa varchar(25) PRIMARY KEY, fechaActualizacion date, fechaCreacion date, keyLevantamientoObra varchar(25), keyUsuarioCreacion text,
-  FOREIGN KEY (keyLevantamientoObra) REFERENCES dbo.ficha_tecnica(keyLevantamientoObra));
+  FOREIGN KEY (keyLevantamientoObra) REFERENCES dbo.levantamiento_obra(keylev));
 
 /* Tabla segmentos */
 CREATE TABLE dbo.segmentos (uid UNIQUEIDENTIFIER PRIMARY KEY, fechaActualizacion date, fechaCreacion date, fechaRegistro date, keyCapa varchar(25),  keyCatColor text,

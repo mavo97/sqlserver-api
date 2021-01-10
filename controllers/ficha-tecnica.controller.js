@@ -116,8 +116,8 @@ async function saveDataSheet(req, res) {
         const meta = item.meta;
 
         await sql.query`INSERT INTO dbo.ejercicios_fiscales (uid, asignacion, esquemaFiscal, letrasAsignacion, letrasEsquemaFiscal, 
-                    letrasMeta, meta, keyLevantamientoObra) VALUES (${id2}, ${asignacion}, ${esquemaFiscal}, ${letrasAsignacion}, ${letrasEsquemaFiscal},
-                        ${letrasMeta}, ${meta}, ${keyLevantamientoObra});`;
+                    letrasMeta, meta, fichaTecnicaId) VALUES (${id2}, ${asignacion}, ${esquemaFiscal}, ${letrasAsignacion}, ${letrasEsquemaFiscal},
+                        ${letrasMeta}, ${meta}, ${id});`;
       }
     } else if (req.body) {
       let pool = await sql.connect(config);
@@ -354,25 +354,25 @@ async function callingUpdateDataSheet(req, res) {
       const result = await sql.query`select * from dbo.ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
       // console.dir(result)
       const fichaTecnica = result.recordset;
-      const keyLevantamiento = fichaTecnica[0].keyLevantamientoObra;
-      const results = await sql.query`SELECT * FROM dbo.ejercicios_fiscales WHERE keyLevantamientoObra LIKE ${keyLevantamiento};`;
+      const fichaTecnicaId = fichaTecnica[0].uid;
+      const results = await sql.query`SELECT * FROM dbo.ejercicios_fiscales WHERE fichaTecnicaId LIKE ${fichaTecnicaId};`;
       if (results) {
-        await sql.query`DELETE FROM dbo.ejercicios_fiscales WHERE keyLevantamientoObra LIKE ${keyLevantamiento};`;
+        await sql.query`DELETE FROM dbo.ejercicios_fiscales WHERE fichaTecnicaId LIKE ${fichaTecnicaId};`;
       }
 
       for (const item of ejerciciosFiscales) {
         const id2 = uuid();
-        const asignacion = item.asignacion;
-        const esquemaFiscal = item.esquemaFiscal;
-        const letrasAsignacion = item.letrasAsignacion;
-        const letrasEsquemaFiscal = item.letrasEsquemaFiscal;
-        const letrasMeta = item.letrasMeta;
-        const meta = item.meta;
+        const asignacion = item.asignacion
+        const esquemaFiscal = item.esquemaFiscal
+        const letrasAsignacion = item.letrasAsignacion
+        const letrasEsquemaFiscal = item. letrasEsquemaFiscal
+        const letrasMeta = item.letrasMeta
+        const meta = item.meta
 
         await sql.query`INSERT INTO dbo.ejercicios_fiscales (uid, asignacion, esquemaFiscal, letrasAsignacion, letrasEsquemaFiscal, 
-                    letrasMeta, meta, keyLevantamientoObra) VALUES (${id2}, ${asignacion}, ${esquemaFiscal}, ${letrasAsignacion}, ${letrasEsquemaFiscal},
-                        ${letrasMeta}, ${meta}, ${keyLevantamiento});`;
-      }
+            letrasMeta, meta, ficha_tecnicaID) VALUES (${id2}, ${asignacion}, ${esquemaFiscal}, ${letrasAsignacion}, ${letrasEsquemaFiscal},
+                ${letrasMeta}, ${meta}, ${fichaTecnicaID});`
+    }
     } else if (req.body) {
       let pool = await sql.connect(config);
       await pool
@@ -419,15 +419,16 @@ async function callingUpdateDataSheet(req, res) {
                         WHERE
                         keyLevantamientoObra LIKE @keyLevantamientoObra;`);
 
-      const result = await sql.query`select * from dbo.ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
-      // console.dir(result)
-      const fichaTecnica = result.recordset;
-      const keyLevantamiento = fichaTecnica[0].keyLevantamientoObra;
-      const results = await sql.query`SELECT * FROM dbo.ejercicios_fiscales WHERE keyLevantamientoObra LIKE ${keyLevantamiento};`;
-
-      if (results) {
-        await sql.query`DELETE FROM dbo.ejercicios_fiscales WHERE keyLevantamientoObra = ${keyLevantamiento};`;
-      }
+        const result = await sql.query`select * from dbo.ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
+        // console.dir(result)
+        const fichaTecnica = result.recordset;
+        const fichaTecnicaID = fichaTecnica[0].uid;
+        const results = await sql.query`SELECT * FROM dbo.ejercicios_fiscales WHERE ficha_tecnicaID LIKE ${fichaTecnicaID};`;
+        
+        if (results){
+            await sql.query`DELETE FROM dbo.ejercicios_fiscales WHERE ficha_tecnicaID = ${fichaTecnicaID};`;
+        }
+        
     } else {
       res.status(503).send({ ficha: "No se pudo actualizar la ficha!" });
       // console.log('hola');

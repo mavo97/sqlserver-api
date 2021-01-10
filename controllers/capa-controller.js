@@ -28,17 +28,17 @@ async function saveCapa(req, res) {
             fechaCreacion) VALUES (@keyCapa, @keyCatCapa, @keyLevantamientoObra, @keyUsuarioCreacion, @fechaActualizacion,
                         @fechaCreacion);`);
     } else {
-      res.status(503).send({ capa: "No se pudo crear la capa!" });
+        res.status(503).send({ capa: "No se pudo crear la capa!" });
     }
 
     sql.close();
     return res.status(200).send({ Capa: "Capa guardada!" });
   } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .send({ message: `Error al guardar en la base de datos: ${error}` });
-  }
+      console.log(error);
+      return res
+        .status(500)
+        .send({ message: `Error al guardar en la base de datos: ${error}` });
+    }
 }
 
 module.exports = {

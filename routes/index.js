@@ -6,6 +6,7 @@ const markerCtrl = require("../controllers/marker");
 const datasheetCtrl = require("../controllers/ficha-tecnica.controller");
 const capasCtrl = require("../controllers/capa-controller");
 const segmentosCtrl = require("../controllers/segmento-controller");
+const levantamientoCtrl = require("../controllers/levantamiento-obra-controller");
 
 // muestra marcadores
 api.get("/markers", markerCtrl.getMarkers);
@@ -27,5 +28,7 @@ api.post("/update-datasheet", datasheetCtrl.updateDataSheet);
 api.post("/crear-capa", capasCtrl.saveCapa);
 // Crear segmento
 api.post("/crear-segmento", segmentosCtrl.saveSegmento);
+// Crear levantamiento de obra
+api.post("/crear-levantamiento", levantamientoCtrl.saveLevantamientoObra)
 
 module.exports = api;
