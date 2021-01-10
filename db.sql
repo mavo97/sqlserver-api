@@ -51,3 +51,6 @@ latitud
 longitud
 nombreEstado
 */
+
+ALTER TABLE dbo.segmentos
+DROP COLUMN fechaRegistro;
