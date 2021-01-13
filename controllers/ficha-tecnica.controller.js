@@ -53,8 +53,7 @@ async function saveDataSheet(req, res) {
   const id = uuid();
 
   try {
-    // make sure that any items are correctly URL encoded in the connection string
-    if (req.body && ejerciciosFiscales.length >= 1) {
+    if (req.body && ejerciciosFiscales) {
       let pool = await sql.connect(config);
 
       await pool
@@ -96,7 +95,7 @@ async function saveDataSheet(req, res) {
         .input("latitud", sql.VarChar, latitud)
         .input("longitud", sql.VarChar, longitud)
         .input("nombreEstado", sql.VarChar, nombreEstado)
-        .query(`INSERT INTO dbo.ficha_tecnica (uid, avanceFinanciero, avanceFinancieroGlobal, avanceFisico, avanceFisicoGlobal,
+        .query(`INSERT INTO dbo.firebase_ficha_tecnica (uid, avanceFinanciero, avanceFinancieroGlobal, avanceFisico, avanceFisicoGlobal,
                 beneficios, caracteristicas, cus, esquemaFinanciamiento, estado, estatusSHCP, fechaActualizacion, fechaCreacion, incluyeImagenes,
                 inversionTotal, keyCatCarpeta, keyCatCorredor, keyCatOrigenRecursos, keyCatSeccion, keyCatTipoPrioridad, keyLevantamientoObra,
                 keyUsuario, liberacionDerechoVia, longitudTotal, mia, observaciones, periodoEjecucion, problematica, proximasAcciones, proyectoEjecutivo,
@@ -115,7 +114,7 @@ async function saveDataSheet(req, res) {
         const letrasMeta = item.letrasMeta;
         const meta = item.meta;
 
-        await sql.query`INSERT INTO dbo.ejercicios_fiscales (uid, asignacion, esquemaFiscal, letrasAsignacion, letrasEsquemaFiscal, 
+        await sql.query`INSERT INTO dbo.firebase_ejercicios_fiscales (uid, asignacion, esquemaFiscal, letrasAsignacion, letrasEsquemaFiscal, 
                     letrasMeta, meta, fichaTecnicaId) VALUES (${id2}, ${asignacion}, ${esquemaFiscal}, ${letrasAsignacion}, ${letrasEsquemaFiscal},
                         ${letrasMeta}, ${meta}, ${id});`;
       }
@@ -161,7 +160,7 @@ async function saveDataSheet(req, res) {
         .input("latitud", sql.VarChar, latitud)
         .input("longitud", sql.VarChar, longitud)
         .input("nombreEstado", sql.VarChar, nombreEstado)
-        .query(`INSERT INTO dbo.ficha_tecnica (uid, avanceFinanciero, avanceFinancieroGlobal, avanceFisico, avanceFisicoGlobal,
+        .query(`INSERT INTO dbo.firebase_ficha_tecnica (uid, avanceFinanciero, avanceFinancieroGlobal, avanceFisico, avanceFisicoGlobal,
                 beneficios, caracteristicas, cus, esquemaFinanciamiento, estado, estatusSHCP, fechaActualizacion, fechaCreacion, incluyeImagenes,
                 inversionTotal, keyCatCarpeta, keyCatCorredor, keyCatOrigenRecursos, keyCatSeccion, keyCatTipoPrioridad, keyLevantamientoObra,
                 keyUsuario, liberacionDerechoVia, longitudTotal, mia, observaciones, periodoEjecucion, problematica, proximasAcciones, proyectoEjecutivo,
@@ -188,9 +187,8 @@ async function saveDataSheet(req, res) {
 
 async function getDataSheet(req, res) {
   try {
-    // make sure that any items are correctly URL encoded in the connection string
     await sql.connect(config);
-    const result = await sql.query`select * from dbo.ficha_tecnica`;
+    const result = await sql.query`select * from dbo.firebase_ficha_tecnica`;
     // console.dir(result)
     if (!result)
       return res
@@ -208,9 +206,8 @@ async function getDataSheet(req, res) {
 
 async function getTaxData(req, res) {
   try {
-    // make sure that any items are correctly URL encoded in the connection string
     await sql.connect(config);
-    const result = await sql.query`select * from dbo.ejercicios_fiscales`;
+    const result = await sql.query`select * from dbo.firebase_ejercicios_fiscales`;
     // console.dir(result)
     if (!result)
       return res
@@ -230,9 +227,8 @@ async function getDataSheetById(req, res) {
   let dataId = req.params.dataId;
 
   try {
-    // make sure that any items are correctly URL encoded in the connection string
     await sql.connect(config);
-    const result = await sql.query`select * from dbo.ficha_tecnica where uid = ${dataId}`;
+    const result = await sql.query`select * from dbo.firebase_ficha_tecnica where uid = ${dataId}`;
     // console.dir(result)
     if (!result)
       return res.status(404).send({
@@ -252,9 +248,8 @@ async function getTaxDataById(req, res) {
   let dataId = req.params.dataId;
 
   try {
-    // make sure that any items are correctly URL encoded in the connection string
     await sql.connect(config);
-    const result = await sql.query`select * from dbo.ejercicios_fiscales where ficha_tecnicaID = ${dataId}`;
+    const result = await sql.query`select * from dbo.firebase_ejercicios_fiscales where ficha_tecnicaID = ${dataId}`;
     // console.dir(result)
     if (!result)
       return res
@@ -304,7 +299,6 @@ async function callingUpdateDataSheet(req, res) {
   const ejerciciosFiscales = req.body.ejerciciosFiscales;
 
   try {
-    // make sure that any items are correctly URL encoded in the connection string
     if (req.body && ejerciciosFiscales.length >= 1) {
       let pool = await sql.connect(config);
       await pool
@@ -338,7 +332,7 @@ async function callingUpdateDataSheet(req, res) {
         .input("proximasAcciones", sql.Text, proximasAcciones)
         .input("proyectoEjecutivo", sql.Text, proyectoEjecutivo)
         .input("registroSHCP", sql.Float, registroSHCP)
-        .input("tpda", sql.Float, tpda).query(`UPDATE dbo.ficha_tecnica
+        .input("tpda", sql.Float, tpda).query(`UPDATE dbo.firebase_ficha_tecnica
                         SET avanceFinanciero = @avanceFinanciero, avanceFinancieroGlobal = @avanceFinancieroGlobal, avanceFisico = @avanceFisico, 
                         avanceFisicoGlobal = @avanceFisicoGlobal, beneficios = @beneficios, caracteristicas = @caracteristicas, cus = @cus, 
                         esquemaFinanciamiento = @esquemaFinanciamiento, estado = @estado, estatusSHCP = @estatusSHCP, fechaActualizacion = @fechaActualizacion, 
@@ -351,28 +345,28 @@ async function callingUpdateDataSheet(req, res) {
                         WHERE
                         keyLevantamientoObra LIKE @keyLevantamientoObra;`);
 
-      const result = await sql.query`select * from dbo.ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
+      const result = await sql.query`select * from dbo.firebase_ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
       // console.dir(result)
       const fichaTecnica = result.recordset;
       const fichaTecnicaId = fichaTecnica[0].uid;
-      const results = await sql.query`SELECT * FROM dbo.ejercicios_fiscales WHERE fichaTecnicaId LIKE ${fichaTecnicaId};`;
+      const results = await sql.query`SELECT * FROM dbo.firebase_ejercicios_fiscales WHERE fichaTecnicaId LIKE ${fichaTecnicaId};`;
       if (results) {
-        await sql.query`DELETE FROM dbo.ejercicios_fiscales WHERE fichaTecnicaId LIKE ${fichaTecnicaId};`;
+        await sql.query`DELETE FROM dbo.firebase_ejercicios_fiscales WHERE fichaTecnicaId LIKE ${fichaTecnicaId};`;
       }
 
       for (const item of ejerciciosFiscales) {
         const id2 = uuid();
-        const asignacion = item.asignacion
-        const esquemaFiscal = item.esquemaFiscal
-        const letrasAsignacion = item.letrasAsignacion
-        const letrasEsquemaFiscal = item. letrasEsquemaFiscal
-        const letrasMeta = item.letrasMeta
-        const meta = item.meta
+        const asignacion = item.asignacion;
+        const esquemaFiscal = item.esquemaFiscal;
+        const letrasAsignacion = item.letrasAsignacion;
+        const letrasEsquemaFiscal = item.letrasEsquemaFiscal;
+        const letrasMeta = item.letrasMeta;
+        const meta = item.meta;
 
-        await sql.query`INSERT INTO dbo.ejercicios_fiscales (uid, asignacion, esquemaFiscal, letrasAsignacion, letrasEsquemaFiscal, 
+        await sql.query`INSERT INTO dbo.firebase_ejercicios_fiscales (uid, asignacion, esquemaFiscal, letrasAsignacion, letrasEsquemaFiscal, 
             letrasMeta, meta, ficha_tecnicaID) VALUES (${id2}, ${asignacion}, ${esquemaFiscal}, ${letrasAsignacion}, ${letrasEsquemaFiscal},
-                ${letrasMeta}, ${meta}, ${fichaTecnicaID});`
-    }
+                ${letrasMeta}, ${meta}, ${fichaTecnicaID});`;
+      }
     } else if (req.body) {
       let pool = await sql.connect(config);
       await pool
@@ -406,7 +400,7 @@ async function callingUpdateDataSheet(req, res) {
         .input("proximasAcciones", sql.Text, proximasAcciones)
         .input("proyectoEjecutivo", sql.Text, proyectoEjecutivo)
         .input("registroSHCP", sql.Float, registroSHCP)
-        .input("tpda", sql.Float, tpda).query(`UPDATE dbo.ficha_tecnica
+        .input("tpda", sql.Float, tpda).query(`UPDATE dbo.firebase_ficha_tecnica
                         SET avanceFinanciero = @avanceFinanciero, avanceFinancieroGlobal = @avanceFinancieroGlobal, avanceFisico = @avanceFisico, 
                         avanceFisicoGlobal = @avanceFisicoGlobal, beneficios = @beneficios, caracteristicas = @caracteristicas, cus = @cus, 
                         esquemaFinanciamiento = @esquemaFinanciamiento, estado = @estado, estatusSHCP = @estatusSHCP, fechaActualizacion = @fechaActualizacion, 
@@ -419,16 +413,15 @@ async function callingUpdateDataSheet(req, res) {
                         WHERE
                         keyLevantamientoObra LIKE @keyLevantamientoObra;`);
 
-        const result = await sql.query`select * from dbo.ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
-        // console.dir(result)
-        const fichaTecnica = result.recordset;
-        const fichaTecnicaID = fichaTecnica[0].uid;
-        const results = await sql.query`SELECT * FROM dbo.ejercicios_fiscales WHERE ficha_tecnicaID LIKE ${fichaTecnicaID};`;
-        
-        if (results){
-            await sql.query`DELETE FROM dbo.ejercicios_fiscales WHERE ficha_tecnicaID = ${fichaTecnicaID};`;
-        }
-        
+      const result = await sql.query`select * from dbo.firebase_ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
+      // console.dir(result)
+      const fichaTecnica = result.recordset;
+      const fichaTecnicaID = fichaTecnica[0].uid;
+      const results = await sql.query`SELECT * FROM dbo.firebase_ejercicios_fiscales WHERE ficha_tecnicaID LIKE ${fichaTecnicaID};`;
+
+      if (results) {
+        await sql.query`DELETE FROM dbo.firebase_ejercicios_fiscales WHERE ficha_tecnicaID = ${fichaTecnicaID};`;
+      }
     } else {
       res.status(503).send({ ficha: "No se pudo actualizar la ficha!" });
       // console.log('hola');
@@ -447,9 +440,8 @@ async function updateDataSheet(req, res) {
   const keyLevantamientoObra = req.body.keyLevantamientoObra;
 
   try {
-    // make sure that any items are correctly URL encoded in the connection string
     await sql.connect(config);
-    const fichaExiste = await sql.query`SELECT * FROM dbo.ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
+    const fichaExiste = await sql.query`SELECT * FROM dbo.firebase_ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
     //TODO: VALIDANDO SI LA FICHA EXISTE
     if (fichaExiste.recordset.length === 0) {
       saveDataSheet(req, res);

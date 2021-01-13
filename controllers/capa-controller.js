@@ -24,7 +24,7 @@ async function saveCapa(req, res) {
         .input("keyUsuarioCreacion", sql.VarChar, keyUsuarioCreacion)
         .input("fechaActualizacion", sql.Date, fechaActualizacion)
         .input("fechaCreacion", sql.Date, fechaCreacion)
-        .query(`INSERT INTO dbo.capas (keyCapa, keyCatCapa, keyLevantamientoObra, keyUsuarioCreacion, fechaActualizacion,
+        .query(`INSERT INTO dbo.firebase_capas (keyCapa, keyCatCapa, keyLevantamientoObra, keyUsuarioCreacion, fechaActualizacion,
             fechaCreacion) VALUES (@keyCapa, @keyCatCapa, @keyLevantamientoObra, @keyUsuarioCreacion, @fechaActualizacion,
                         @fechaCreacion);`);
     } else {

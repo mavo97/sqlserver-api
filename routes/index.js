@@ -2,16 +2,12 @@
 
 const express = require("express");
 const api = express.Router();
-const markerCtrl = require("../controllers/marker");
 const datasheetCtrl = require("../controllers/ficha-tecnica.controller");
 const capasCtrl = require("../controllers/capa-controller");
 const segmentosCtrl = require("../controllers/segmento-controller");
 const levantamientoCtrl = require("../controllers/levantamiento-obra-controller");
+const tipoCapaCtrl = require("../controllers/tipocapa-controller");
 
-// muestra marcadores
-api.get("/markers", markerCtrl.getMarkers);
-// Guarda un marcador
-api.post("/save-marker", markerCtrl.saveMarker);
 // Guarda una ficha tecnica
 api.post("/save-datasheet", datasheetCtrl.saveDataSheet);
 // Muestra las fichas tecnicas registradas
@@ -29,6 +25,8 @@ api.post("/crear-capa", capasCtrl.saveCapa);
 // Crear segmento
 api.post("/crear-segmento", segmentosCtrl.saveSegmento);
 // Crear levantamiento de obra
-api.post("/crear-levantamiento", levantamientoCtrl.saveLevantamientoObra)
+api.post("/crear-levantamiento", levantamientoCtrl.saveLevantamientoObra);
+// Crear levantamiento de obra
+api.post("/crear-tipocapa", tipoCapaCtrl.saveTipoCapa);
 
 module.exports = api;
