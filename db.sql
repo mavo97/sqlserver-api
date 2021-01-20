@@ -37,5 +37,9 @@ nombre text);
 ALTER TABLE dbo.firebase_capas
 ADD FOREIGN KEY (keyCatCapa) REFERENCES dbo.firebase_catTipoCapaObra(keyCat);
 
+ALTER TABLE firebase_levantamiento_obra ALTER COLUMN keyCatEstado VARCHAR;
+
 -- INSERT INTO dbo.firebase_catTipoCapaObra ( keyCat, descripcion, activo, fechaActualizacion, fechaCreacion, nombre)
 -- VALUES ();
+CREATE TABLE dbo.firebase_catEstados (keyCatEstado VARCHAR PRIMARY KEY, nombre TEXT, longitud FLOAT, latitud FLOAT, activo BIT, fechaCreacion DATE,
+fechaActualizacion DATE);
