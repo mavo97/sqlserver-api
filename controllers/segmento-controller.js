@@ -49,7 +49,7 @@ async function saveSegmento(req, res) {
         // await crearCoordenadas(coordenadas, id);
         const latlngs = encodeCoordenadas(coordenadas);
         await crearCoordenadas(latlngs, id);
-      } else if (req.body) {
+      } else if (req.body && coordenadas.length <= 0) {
         let pool = await sql.connect(config);
         await pool
           .request()
