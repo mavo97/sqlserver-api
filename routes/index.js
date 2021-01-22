@@ -7,6 +7,7 @@ const capasCtrl = require("../controllers/capa-controller");
 const segmentosCtrl = require("../controllers/segmento-controller");
 const levantamientoCtrl = require("../controllers/levantamiento-obra-controller");
 const tipoCapaCtrl = require("../controllers/tipocapa-controller");
+const tipoEstadoCtrl = require("../controllers/catestado-controller");
 
 // Guarda una ficha tecnica
 api.post("/save-datasheet", datasheetCtrl.saveDataSheet);
@@ -28,5 +29,7 @@ api.post("/crear-segmento", segmentosCtrl.saveSegmento);
 api.post("/crear-levantamiento", levantamientoCtrl.saveLevantamientoObra);
 // Crear levantamiento de obra
 api.post("/crear-tipocapa", tipoCapaCtrl.saveTipoCapa);
+// Crear estado en catalogo de estados
+api.post("/crear-estado", tipoEstadoCtrl.saveCatEstado);
 
 module.exports = api;

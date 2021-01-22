@@ -49,7 +49,7 @@ async function saveSegmento(req, res) {
         // await crearCoordenadas(coordenadas, id);
         const latlngs = encodeCoordenadas(coordenadas);
         await crearCoordenadas(latlngs, id);
-      } else if (req.body) {
+      } else if (req.body && coordenadas.length <= 0) {
         let pool = await sql.connect(config);
         await pool
           .request()
@@ -82,6 +82,7 @@ async function crearCoordenadas(latlngs, id) {
   await sql.query`INSERT INTO dbo.firebase_coordenadas (latlngs, segmentoID) VALUES (${latlngs}, ${segmentoID});`;
 }
 
+// Funcion para codificar arreglo de coordenadas a una cadena de texto
 function encodeCoordenadas(coordenadas) {
   const coordenadasDec = [];
   for (const coordenada of coordenadas) {
@@ -92,6 +93,7 @@ function encodeCoordenadas(coordenadas) {
   return latlngs;
 }
 
+// Función para eliminar un segmento
 async function deleteSegmento(req, res) {
   const keyCapa = req.body.keyCapa;
   const longitud = req.body.longitud;
@@ -117,6 +119,7 @@ async function deleteSegmento(req, res) {
   }
 }
 
+// Funcion para eliminar coordenadas
 async function deleteCoordenadas(segmentoID) {
   try {
     const deleted = await sql.query`DELETE FROM dbo.firebase_coordenadas WHERE segmentoID LIKE ${segmentoID};`;
