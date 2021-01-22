@@ -249,7 +249,7 @@ async function getTaxDataById(req, res) {
 
   try {
     await sql.connect(config);
-    const result = await sql.query`select * from dbo.firebase_ejercicios_fiscales where ficha_tecnicaID = ${dataId}`;
+    const result = await sql.query`select * from dbo.firebase_ejercicios_fiscales where fichaTecnicaId = ${dataId}`;
     // console.dir(result)
     if (!result)
       return res
@@ -364,8 +364,8 @@ async function callingUpdateDataSheet(req, res) {
         const meta = item.meta;
 
         await sql.query`INSERT INTO dbo.firebase_ejercicios_fiscales (uid, asignacion, esquemaFiscal, letrasAsignacion, letrasEsquemaFiscal, 
-            letrasMeta, meta, ficha_tecnicaID) VALUES (${id2}, ${asignacion}, ${esquemaFiscal}, ${letrasAsignacion}, ${letrasEsquemaFiscal},
-                ${letrasMeta}, ${meta}, ${fichaTecnicaID});`;
+            letrasMeta, meta, fichaTecnicaId) VALUES (${id2}, ${asignacion}, ${esquemaFiscal}, ${letrasAsignacion}, ${letrasEsquemaFiscal},
+                ${letrasMeta}, ${meta}, ${fichaTecnicaId});`;
       }
     } else if (req.body) {
       let pool = await sql.connect(config);
@@ -416,11 +416,11 @@ async function callingUpdateDataSheet(req, res) {
       const result = await sql.query`select * from dbo.firebase_ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
       // console.dir(result)
       const fichaTecnica = result.recordset;
-      const fichaTecnicaID = fichaTecnica[0].uid;
-      const results = await sql.query`SELECT * FROM dbo.firebase_ejercicios_fiscales WHERE ficha_tecnicaID LIKE ${fichaTecnicaID};`;
+      const fichaTecnicaId = fichaTecnica[0].uid;
+      const results = await sql.query`SELECT * FROM dbo.firebase_ejercicios_fiscales WHERE fichaTecnicaId LIKE ${fichaTecnicaId};`;
 
       if (results) {
-        await sql.query`DELETE FROM dbo.firebase_ejercicios_fiscales WHERE ficha_tecnicaID = ${fichaTecnicaID};`;
+        await sql.query`DELETE FROM dbo.firebase_ejercicios_fiscales WHERE fichaTecnicaId = ${fichaTecnicaId};`;
       }
     } else {
       res.status(503).send({ ficha: "No se pudo actualizar la ficha!" });
