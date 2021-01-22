@@ -10,7 +10,7 @@ const tipoCapaCtrl = require("../controllers/tipocapa-controller");
 const tipoEstadoCtrl = require("../controllers/catestado-controller");
 
 // Guarda una ficha tecnica
-api.post("/save-datasheet", datasheetCtrl.saveDataSheet);
+api.post("/save-datasheet", datasheetCtrl.saveDataSheet2);
 // Muestra las fichas tecnicas registradas
 api.get("/datasheets", datasheetCtrl.getDataSheet);
 // Muestra una ficha tecnica por su ID

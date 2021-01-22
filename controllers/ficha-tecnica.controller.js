@@ -174,7 +174,7 @@ async function saveDataSheet(req, res) {
       // console.log('hola');
     }
     // console.log('Si se pudo');
-    sql.close();
+    // sql.close();
     return res.status(200).send({ ficha: "Ficha guardada!" });
   } catch (err) {
     // ... error checks
@@ -455,6 +455,27 @@ async function updateDataSheet(req, res) {
   }
 }
 
+async function saveDataSheet2(req, res) {
+  const keyLevantamientoObra = req.body.keyLevantamientoObra;
+
+  try {
+    await sql.connect(config);
+    const fichaExiste = await sql.query`SELECT * FROM dbo.firebase_ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
+    //TODO: VALIDANDO SI LA FICHA EXISTE
+    if (fichaExiste.recordset.length === 0) {
+      saveDataSheet(req, res);
+    } else {
+      console.log("Ya existe");
+
+      return res.status(503).send({ ficha: "No se pudo actualizar la ficha!" });
+    }
+  } catch (err) {
+    // ... error checks
+    console.log(err);
+    return res.status(500).send({ message: `Ya existe la ficha!: ${err}` });
+  }
+}
+
 module.exports = {
   saveDataSheet,
   getDataSheet,
@@ -462,4 +483,5 @@ module.exports = {
   getDataSheetById,
   getTaxDataById,
   updateDataSheet,
+  saveDataSheet2,
 };
