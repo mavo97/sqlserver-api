@@ -174,7 +174,7 @@ async function saveDataSheet(req, res) {
       // console.log('hola');
     }
     // console.log('Si se pudo');
-    // sql.close();
+    sql.close();
     return res.status(200).send({ ficha: "Ficha guardada!" });
   } catch (err) {
     // ... error checks

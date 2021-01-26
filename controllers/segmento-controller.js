@@ -65,7 +65,7 @@ async function saveSegmento(req, res) {
                                 @fechaActualizacion, @fechaCreacion);`);
       }
     }
-    // sql.close();
+    sql.close();
     console.log("Todo bien");
     return res.status(200).send({ segmento: "Segmento guardado!" });
   } catch (error) {

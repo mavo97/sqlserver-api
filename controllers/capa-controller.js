@@ -30,7 +30,7 @@ async function saveCapa(req, res) {
     } else {
       res.status(503).send({ capa: "No se pudo crear la capa!" });
     }
-
+    sql.close();
     return res.status(200).send({ Capa: "Capa guardada!" });
   } catch (error) {
     console.log(error);
