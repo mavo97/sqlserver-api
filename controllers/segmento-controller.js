@@ -20,8 +20,10 @@ async function saveSegmento(req, res) {
   const id = uuid();
 
   try {
+    console.log("Vamos a guardar");
     if (req.body && coordenadas) {
       let pool = await sql.connect(config);
+
       await pool
         .request()
         .input("uid", sql.VarChar, id)
@@ -37,9 +39,7 @@ async function saveSegmento(req, res) {
 
       // await crearCoordenadas(coordenadas, id);
       const latlngs = encodeCoordenadas(coordenadas);
-      const segmentoID = id;
-      await sql.query`INSERT INTO dbo.firebase_coordenadas (latlngs, segmentoID) VALUES (${latlngs}, ${segmentoID});`;
-      // await crearCoordenadas(latlngs, id);
+      await crearCoordenadas(latlngs, id);
     } else if (req.body && coordenadas.length <= 0) {
       let pool = await sql.connect(config);
       await pool
@@ -55,6 +55,7 @@ async function saveSegmento(req, res) {
                     fechaActualizacion, fechaCreacion) VALUES (@uid, @keyCapa, @longitud, @keyCatColor, @keyUsuarioCreacion,
                                 @fechaActualizacion, @fechaCreacion);`);
     }
+
     sql.close();
     console.log("Todo bien");
     return res.status(200).send({ segmento: "Segmento guardado!" });
@@ -67,6 +68,7 @@ async function saveSegmento(req, res) {
 }
 
 async function crearCoordenadas(latlngs, id) {
+  await sql.connect(config);
   const segmentoID = id;
 
   await sql.query`INSERT INTO dbo.firebase_coordenadas (latlngs, segmentoID) VALUES (${latlngs}, ${segmentoID});`;
