@@ -20,8 +20,6 @@ async function saveSegmento(req, res) {
   const id = uuid();
 
   try {
-    await sql.connect(config);
-
     if (req.body && coordenadas) {
       let pool = await sql.connect(config);
       await pool
