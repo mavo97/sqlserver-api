@@ -21,49 +21,40 @@ async function saveSegmento(req, res) {
 
   try {
     await sql.connect(config);
-    const results = await sql.query`SELECT * FROM dbo.firebase_segmentos WHERE longitud LIKE ${longitud} AND keyCapa LIKE ${keyCapa};`;
-    console.log(results);
-    if (results.recordset.length > 0) {
-      console.log("No se creo nada");
 
-      return res
-        .status(503)
-        .send({ segmento: "No se pudo crear el segmento!" });
-    } else {
-      console.log("Vamos a guardar");
-      if (req.body && coordenadas) {
-        let pool = await sql.connect(config);
-        await pool
-          .request()
-          .input("uid", sql.VarChar, id)
-          .input("keyCapa", sql.VarChar, keyCapa)
-          .input("longitud", sql.Float, longitud)
-          .input("keyCatColor", sql.VarChar, keyCatColor)
-          .input("keyUsuarioCreacion", sql.VarChar, keyUsuarioCreacion)
-          .input("fechaActualizacion", sql.Date, fechaActualizacion)
-          .input("fechaCreacion", sql.Date, fechaCreacion)
-          .query(`INSERT INTO dbo.firebase_segmentos (uid, keyCapa, longitud, keyCatColor, keyUsuarioCreacion,
+    if (req.body && coordenadas) {
+      let pool = await sql.connect(config);
+      await pool
+        .request()
+        .input("uid", sql.VarChar, id)
+        .input("keyCapa", sql.VarChar, keyCapa)
+        .input("longitud", sql.Float, longitud)
+        .input("keyCatColor", sql.VarChar, keyCatColor)
+        .input("keyUsuarioCreacion", sql.VarChar, keyUsuarioCreacion)
+        .input("fechaActualizacion", sql.Date, fechaActualizacion)
+        .input("fechaCreacion", sql.Date, fechaCreacion)
+        .query(`INSERT INTO dbo.firebase_segmentos (uid, keyCapa, longitud, keyCatColor, keyUsuarioCreacion,
                     fechaActualizacion, fechaCreacion) VALUES (@uid, @keyCapa, @longitud, @keyCatColor, @keyUsuarioCreacion,
                                 @fechaActualizacion, @fechaCreacion);`);
 
-        // await crearCoordenadas(coordenadas, id);
-        const latlngs = encodeCoordenadas(coordenadas);
-        await crearCoordenadas(latlngs, id);
-      } else if (req.body && coordenadas.length <= 0) {
-        let pool = await sql.connect(config);
-        await pool
-          .request()
-          .input("uid", sql.VarChar, id)
-          .input("keyCapa", sql.VarChar, keyCapa)
-          .input("longitud", sql.Float, longitud)
-          .input("keyCatColor", sql.VarChar, keyCatColor)
-          .input("keyUsuarioCreacion", sql.VarChar, keyUsuarioCreacion)
-          .input("fechaActualizacion", sql.Date, fechaActualizacion)
-          .input("fechaCreacion", sql.Date, fechaCreacion)
-          .query(`INSERT INTO dbo.firebase_segmentos (uid, keyCapa, longitud, keyCatColor, keyUsuarioCreacion,
+      // await crearCoordenadas(coordenadas, id);
+      const latlngs = encodeCoordenadas(coordenadas);
+
+      await crearCoordenadas(latlngs, id);
+    } else if (req.body && coordenadas.length <= 0) {
+      let pool = await sql.connect(config);
+      await pool
+        .request()
+        .input("uid", sql.VarChar, id)
+        .input("keyCapa", sql.VarChar, keyCapa)
+        .input("longitud", sql.Float, longitud)
+        .input("keyCatColor", sql.VarChar, keyCatColor)
+        .input("keyUsuarioCreacion", sql.VarChar, keyUsuarioCreacion)
+        .input("fechaActualizacion", sql.Date, fechaActualizacion)
+        .input("fechaCreacion", sql.Date, fechaCreacion)
+        .query(`INSERT INTO dbo.firebase_segmentos (uid, keyCapa, longitud, keyCatColor, keyUsuarioCreacion,
                     fechaActualizacion, fechaCreacion) VALUES (@uid, @keyCapa, @longitud, @keyCatColor, @keyUsuarioCreacion,
                                 @fechaActualizacion, @fechaCreacion);`);
-      }
     }
     sql.close();
     console.log("Todo bien");
