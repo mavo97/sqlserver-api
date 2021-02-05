@@ -57,3 +57,6 @@ fechaActualizacion) VALUES ('1', 'Carreteras Federales', true, 'Carreteras Feder
 ALTER TABLE dbo.firebase_levantamiento_obra
 ADD FOREIGN KEY (keyCatDireccionAdjunta) REFERENCES dbo.firebase_catDireccionAdjunta(keyCatDireccionAdjunta);
 );
+
+CREATE TABLE firebase_avances (avanceFisico float, avanceFinanciero float, fecha date, keyLevantamientoObra varchar(25),
+ FOREIGN KEY (keyLevantamientoObra) REFERENCES dbo.firebase_levantamiento_obra(keylev) );

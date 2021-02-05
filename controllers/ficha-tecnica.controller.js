@@ -118,6 +118,11 @@ async function saveDataSheet(req, res) {
                     letrasMeta, meta, fichaTecnicaId) VALUES (${id2}, ${asignacion}, ${esquemaFiscal}, ${letrasAsignacion}, ${letrasEsquemaFiscal},
                         ${letrasMeta}, ${meta}, ${id});`;
       }
+
+      const fecha = "2021-01-31";
+
+      await sql.query`INSERT INTO dbo.firebase_avances (avanceFisico, avanceFinanciero, fecha, keyLevantamientoObra)
+       VALUES (${avanceFisico}, ${avanceFinanciero}, ${fecha}, ${keyLevantamientoObra});`;
     } else if (req.body) {
       let pool = await sql.connect(config);
 
@@ -169,6 +174,10 @@ async function saveDataSheet(req, res) {
                     @inversionTotal, @keyCatCarpeta, @keyCatCorredor, @keyCatOrigenRecursos, @keyCatSeccion, @keyCatTipoPrioridad, @keyLevantamientoObra,
                     @keyUsuario, @liberacionDerechoVia, @longitudTotal, @mia, @observaciones, @periodoEjecucion, @problematica, @proximasAcciones, @proyectoEjecutivo,
                     @registroSHCP, @tpda, @nombreObra, @nombreTramoLicitacion, @latitud, @longitud, @nombreEstado);`);
+      const fecha = "2021-01-31";
+
+      await sql.query`INSERT INTO dbo.firebase_avances (avanceFisico, avanceFinanciero, fecha, keyLevantamientoObra)
+                    VALUES (${avanceFisico}, ${avanceFinanciero}, ${fecha}, ${keyLevantamientoObra});`;
     } else {
       res.status(503).send({ ficha: "No se pudo crear la ficha!" });
       // console.log('hola');
@@ -366,6 +375,11 @@ async function callingUpdateDataSheet(req, res) {
         await sql.query`INSERT INTO dbo.firebase_ejercicios_fiscales (uid, asignacion, esquemaFiscal, letrasAsignacion, letrasEsquemaFiscal, 
             letrasMeta, meta, fichaTecnicaId) VALUES (${id2}, ${asignacion}, ${esquemaFiscal}, ${letrasAsignacion}, ${letrasEsquemaFiscal},
                 ${letrasMeta}, ${meta}, ${fichaTecnicaId});`;
+
+        const fecha = "2021-01-31";
+
+        await sql.query`INSERT INTO dbo.firebase_avances (avanceFisico, avanceFinanciero, fecha, keyLevantamientoObra)
+                              VALUES (${avanceFisico}, ${avanceFinanciero}, ${fecha}, ${keyLevantamientoObra});`;
       }
     } else if (req.body) {
       let pool = await sql.connect(config);
@@ -412,6 +426,10 @@ async function callingUpdateDataSheet(req, res) {
                         registroSHCP = @registroSHCP, tpda = @tpda
                         WHERE
                         keyLevantamientoObra LIKE @keyLevantamientoObra;`);
+      const fecha = "2021-01-31";
+
+      await sql.query`INSERT INTO dbo.firebase_avances (avanceFisico, avanceFinanciero, fecha, keyLevantamientoObra)
+                                      VALUES (${avanceFisico}, ${avanceFinanciero}, ${fecha}, ${keyLevantamientoObra});`;
 
       const result = await sql.query`select * from dbo.firebase_ficha_tecnica WHERE keyLevantamientoObra LIKE ${keyLevantamientoObra};`;
       // console.dir(result)
